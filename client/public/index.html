@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI LoreCrafter - Generate unique RPG adventures with AI. Create immersive stories, characters, and quests from simple prompts. Experience procedurally generated pixel art games.">
+    <title>AI LoreCrafter</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #111;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        
+        #game-container {
+            width: 480px;
+            height: 800px;
+            position: relative;
+            margin: 0 auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        #prompt-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        
+        #prompt-form {
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        #prompt-input {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #444;
+            background-color: #222;
+            color: #fff;
+            border-radius: 4px;
+        }
+        
+        #prompt-submit {
+            background-color: #2E7D32; /* Darker green for better contrast */
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        #prompt-submit:hover {
+            background-color: #1B5E20; /* Even darker on hover */
+        }
+        
+        #loading-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        
+        #progress-container {
+            width: 80%;
+            height: 20px;
+            background-color: #333;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+        
+        #progress-bar {
+            width: 0%;
+            height: 100%;
+            background-color: #4CAF50;
+            transition: width 0.3s ease;
+        }
+        
+        #error-message {
+            color: #f44336;
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <!-- Phaser game will be rendered here -->
+        
+        <!-- Prompt input screen -->
+        <div id="prompt-container">
+            <h1>AI LoreCrafter</h1>
+            <p>Enter a prompt to generate your RPG adventure:</p>
+            <form id="prompt-form">
+                <input 
+                    type="text" 
+                    id="prompt-input" 
+                    placeholder="A steampunk adventure with airships and magic..."
+                    required
+                >
+                <button type="submit" id="prompt-submit">Generate Adventure</button>
+            </form>
+            <div id="error-message"></div>
+        </div>
+        
+        <!-- Loading screen -->
+        <div id="loading-screen">
+            <h2>Generating your adventure...</h2>
+            <div id="progress-container">
+                <div id="progress-bar"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const promptForm = document.getElementById('prompt-form');
+            const promptContainer = document.getElementById('prompt-container');
+            const loadingScreen = document.getElementById('loading-screen');
+            const promptInput = document.getElementById('prompt-input');
+            
+            promptForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const prompt = promptInput.value.trim();
+                if (!prompt) return;
+                
+                // Hide prompt container and show loading screen
+                promptContainer.style.display = 'none';
+                loadingScreen.style.display = 'flex';
+                
+                // Start game generation with the prompt
+                if (window.startGameGeneration) {
+                    window.startGameGeneration(prompt);
+                } else {
+                    console.error('Game not initialized properly');
+                    document.getElementById('error-message').textContent = 'Game failed to initialize. Please refresh the page.';
+                    document.getElementById('error-message').style.display = 'block';
+                    loadingScreen.style.display = 'none';
+                    promptContainer.style.display = 'flex';
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

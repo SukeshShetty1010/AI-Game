@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - ./client/public/assets:/app/client_assets
+      - backend_cache:/app/cache
+    environment:
+      - PORT=3000
+      - HOST=0.0.0.0
+      - DEBUG=false
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - IMAGE_GEN_API_KEY=${IMAGE_GEN_API_KEY}
+      - CLIENT_URL=http://client:3000
+    restart: unless-stopped
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  backend_cache: 
