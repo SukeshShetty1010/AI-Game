@@ -10,7 +10,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Environment variable for Groq API key
-GROQ_API_KEY = os.getenv("GROQ_API_KEY", "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")
+GROQ_API_KEY = os.getenv("GROQ_API_KEY", "xxxxxxxxxxxxxxxxx")
 
 # System prompt for game generation
 SYSTEM_PROMPT = """
